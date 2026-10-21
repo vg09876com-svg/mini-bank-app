@@ -1,5 +1,5 @@
-const User = require('../models/user');
-const Transaction = require('../models/transaction');
+const User = require('../models/User');
+const Transaction = require('../models/Transaction');
 const Loan = require('../models/Loan');
 const bcrypt = require('bcryptjs');
 
