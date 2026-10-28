@@ -6,7 +6,7 @@ export const fetchDashboard = createAsyncThunk(
   'account/fetchDashboard',
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      const res = await api.get('/account/dashboard');
+      const res = api.get('/user/dashboard');
       if (res.data.user?.balance !== undefined) {
         dispatch(updateLocalBalance(res.data.user.balance));
       }
@@ -21,7 +21,7 @@ export const fetchTransactions = createAsyncThunk(
   'account/fetchTransactions',
   async (_, { rejectWithValue }) => {
     try {
-      const res = await api.get('/account/transactions');
+      const res = await api.get('/user/transactions');
       return res.data.transactions;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Failed to load transactions.');
@@ -33,7 +33,7 @@ export const sendTransfer = createAsyncThunk(
   'account/sendTransfer',
   async ({ recipientAccountNumber, amount, description }, { dispatch, rejectWithValue }) => {
     try {
-      const res = await api.post('/account/transfer', { recipientAccountNumber, amount, description });
+      const res = await api.post('/user/transfer', { recipientAccountNumber, amount, description })
       dispatch(updateLocalBalance(res.data.newBalance));
       dispatch(fetchDashboard());
       return res.data;
@@ -47,7 +47,7 @@ export const withdrawFunds = createAsyncThunk(
   'account/withdrawFunds',
   async ({ amount, bankName, accountNumber, accountName }, { dispatch, rejectWithValue }) => {
     try {
-      const res = await api.post('/account/withdraw', { amount, bankName, accountNumber, accountName });
+      const res = await api.post('/user/withdraw', { amount, bankName, accountNumber, accountName });
       dispatch(updateLocalBalance(res.data.newBalance));
       dispatch(fetchDashboard());
       return res.data;
@@ -61,7 +61,7 @@ export const depositFunds = createAsyncThunk(
   'account/depositFunds',
   async ({ amount, channel }, { dispatch, rejectWithValue }) => {
     try {
-      const res = await api.post('/account/deposit', { amount, channel });
+      const res = await api.post('/user/deposit', { amount, channel });
       dispatch(updateLocalBalance(res.data.newBalance));
       dispatch(fetchDashboard());
       return res.data;

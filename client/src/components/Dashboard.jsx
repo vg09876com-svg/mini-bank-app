@@ -1,3 +1,4 @@
+import Travel from './Travel';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDashboard } from '../redux/accountSlice';
@@ -37,6 +38,7 @@ export default function Dashboard() {
   const [copiedAcc, setCopiedAcc] = useState(false);
   const [filterType, setFilterType] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeFeature, setActiveFeature] = useState(null);
 
   useEffect(() => {
     dispatch(fetchDashboard());
@@ -65,6 +67,11 @@ export default function Dashboard() {
     }
     return true;
   });
+
+
+  if (activeFeature === 'travel') {
+    return <Travel onBack={() => setActiveFeature(null)} />;
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
